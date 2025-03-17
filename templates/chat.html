@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bays Bot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+        h1 {
+            color: black;
+            text-align: center;
+        }
+        #chat-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 70%;
+            height: 400px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            background: #f9f9f9;
+        }
+        .user {
+            color: green;
+            font-weight: bold;
+        }
+        .bot {
+            color: blue;
+            font-weight: bold;
+        }
+        #message-form {
+            width: 70%;
+            display: flex;
+            gap: 10px;
+        }
+        #message-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 1.1rem;
+        }
+        #message-form button {
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hej Marianne! 🌻</h1>
+    <div id="chat-box"></div>
+    <form id="message-form">
+        <input type="text" id="user-input" placeholder="Skriv din besked..." autocomplete="off">
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('message-form');
+        const input = document.getElementById('user-input');
+        const chatBox = document.getElementById('chat-box');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendMessage();
+        });
+
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
+            const message = input.value.trim();
+            if (!message) return;
+
+            // Brugeren skriver
+            chatBox.innerHTML += `<p><span class="user">Marianne:</span> ${message}</p>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Send til backend
+            fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatBox.innerHTML += `<p><span class="bot">Bays Bot:</span> ${data.reply}</p>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
