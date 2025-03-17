@@ -3,4 +3,5 @@ flask_sqlalchemy
 openai
 python-dotenv
 gunicorn
+flask-cors
 
