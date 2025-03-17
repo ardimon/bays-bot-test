@@ -85,7 +85,7 @@
             chatBox.innerHTML += `<p><span class="user">Marianne:</span> ${message}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Send til backend
+            // Korrekt fetch til backend (samme server)
             fetch('/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
