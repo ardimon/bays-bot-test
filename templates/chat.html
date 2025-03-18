@@ -50,6 +50,14 @@
             padding: 10px 20px;
             font-size: 1.1rem;
         }
+        #reset-btn {
+            margin-top: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -60,10 +68,14 @@
         <button type="submit">Send</button>
     </form>
 
+    <!-- Nulstil-knap kun til dig -->
+    <button id="reset-btn">Nulstil hukommelse</button>
+
     <script>
         const form = document.getElementById('message-form');
         const input = document.getElementById('user-input');
         const chatBox = document.getElementById('chat-box');
+        const resetBtn = document.getElementById('reset-btn');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -81,11 +93,9 @@
             const message = input.value.trim();
             if (!message) return;
 
-            // Brugeren skriver
             chatBox.innerHTML += `<p><span class="user">Marianne:</span> ${message}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Korrekt fetch til backend (samme server)
             fetch('/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -99,6 +109,15 @@
 
             input.value = '';
         }
+
+        // Reset-knap
+        resetBtn.addEventListener('click', () => {
+            fetch('/clear_db', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Hukommelse nulstillet!');
+                });
+        });
     </script>
 </body>
 </html>
