@@ -79,5 +79,15 @@ def clear_db():
         db.session.commit()
     return jsonify({"status": "Hukommelse slettet"})
 
+@app.route('/reset', methods=['POST'])
+def reset_test_db():
+    user_id = "test"
+    user_data = UserData.query.filter_by(user_id=user_id).first()
+    if user_data:
+        db.session.delete(user_data)
+        db.session.commit()
+    return jsonify({"status": "Test hukommelse slettet"})
+
 if __name__ == '__main__':
     app.run(debug=True)
+
