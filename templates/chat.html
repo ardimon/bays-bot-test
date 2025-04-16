@@ -58,17 +58,33 @@
             padding: 10px 20px;
             cursor: pointer;
         }
+#help-box {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    background: #fff8dc;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    max-width: 200px;
+}
     </style>
 </head>
 <body>
     <h1>Hej Marianne! 🌻</h1>
+
+
     <div id="chat-box"></div>
     <form id="message-form">
         <input type="text" id="user-input" placeholder="Skriv din besked..." autocomplete="off">
         <button type="submit">Send</button>
     </form>
 
-    <!-- Nulstil-knap kun til dig -->
+<<<<<<< HEAD
+<!-- Nulstil-knap kun til dig -->
+<button id="reset-btn">Nulstil hukommelse</button>
+=======
+>>>>>>> 1148ccb (Opdateret prompt til Marianne)
     <button id="reset-btn">Nulstil hukommelse</button>
 
     <script>
@@ -76,6 +92,11 @@
         const input = document.getElementById('user-input');
         const chatBox = document.getElementById('chat-box');
         const resetBtn = document.getElementById('reset-btn');
+<<<<<<< HEAD
+=======
+
+        let awaitingConfirmation = false;
+>>>>>>> 1148ccb (Opdateret prompt til Marianne)
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -96,21 +117,50 @@
             chatBox.innerHTML += `<p><span class="user">Marianne:</span> ${message}</p>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
+<<<<<<< HEAD
+=======
+            if (awaitingConfirmation && (message.toLowerCase() === 'klar' || message.toLowerCase() === 'videre')) {
+                awaitingConfirmation = false;
+                sendNextStep();
+            } else if (!awaitingConfirmation) {
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    chatBox.innerHTML += `<p><span class="bot">Bays Bot:</span> ${data.reply}</p>`;
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                    awaitingConfirmation = true;
+                });
+            } else {
+                chatBox.innerHTML += `<p><span class="bot">Bays Bot:</span> Skriv "klar" for næste skridt.</p>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            input.value = '';
+        }
+
+        function sendNextStep() {
+>>>>>>> 1148ccb (Opdateret prompt til Marianne)
             fetch('/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: message })
+                body: JSON.stringify({ message: 'fortsæt' })
             })
             .then(response => response.json())
             .then(data => {
                 chatBox.innerHTML += `<p><span class="bot">Bays Bot:</span> ${data.reply}</p>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
+                awaitingConfirmation = true;
             });
-
-            input.value = '';
         }
 
+<<<<<<< HEAD
         // Reset-knap
+=======
+>>>>>>> 1148ccb (Opdateret prompt til Marianne)
         resetBtn.addEventListener('click', () => {
             fetch('/clear_db', { method: 'POST' })
                 .then(response => response.json())
